@@ -2,6 +2,8 @@ import Vue from 'vue';
 import BudgetApp from './components/BudgetApp.vue';
 import {instantiateSQL} from './util/utils.js';
 
+Vue.config.productionTip = false;
+
 let vm = new Vue({
   el: '#app',
   data: {
