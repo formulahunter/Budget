@@ -2,19 +2,15 @@
     <div class="txn-record">
         <div class="title">
             <h3><span>{{ txn.title }}</span></h3>
-            <span class="date">{{ txn.dateStringShort }}</span>
+            <span class="date">{{ dateStringShort }}</span>
         </div>
-        <div class="category">
-            <h4>
-                <span class="cat">{{ txn.category }}</span>
-                <span class="subcat" v-if="txn.subcategory"> &ndash; {{ txn.subcategory }}</span>
-            </h4>
-        </div>
-        <div class="value">
-            <span class="category">{{ txn.category }}</span>
-            <span class="account">{{ txn.account }}</span>
-            &nbsp;&ndash;&nbsp;
-            <span class="amount">{{ getAmountWithSign('()') }}</span>
+        <div class="sources">
+            <div class="source" v-for="src of txn.sources" :key="src.id">
+                <span class="category" :key="`${src.id}-cat`">{{ `${src.category.name}: ` }}</span>
+                <span class="fund">{{ src.fund.name }}</span>
+                &ensp;&ensp;
+                <span class="amount">{{ getAmountWithSign('()', src.amount) }}</span>
+            </div>
         </div>
     </div>
 </template>
@@ -27,13 +23,13 @@
             txn: Object
         },
         methods: {
-            getAmountWithSign(sign) {
-                return currencyString(this.txn.grossValue, sign);
+            getAmountWithSign(sign, val = this.txn.grossValue) {
+                return currencyString(val, sign);
             }
         },
         computed: {
             dateStringShort() {
-                return `${this.txn.date.getMonth() + 1}/${this.txn.date.getDate()}`;
+                return `${this.txn.time.getMonth() + 1}/${this.txn.time.getDate()}`;
             },
             amountString() {
                 return currencyString(this.txn.grossValue);
@@ -48,7 +44,8 @@
     }
 
     div.txn-record div.title h3 {
-        display: inline;
+        /*display: inline;*/
+        margin-bottom: 0.1em;
         text-decoration: underline;
     }
     div.txn-record div.category h4 {

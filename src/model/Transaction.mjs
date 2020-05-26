@@ -83,6 +83,11 @@ class Transaction {
         return this._sources.includes(src);
     }
 
+    /** get the sources array for iteration */
+    get sources() {
+        return this._sources;
+    }
+
     /** add a new source to this transaction */
     addSource(src) {
         if(!(src instanceof Source)) {
