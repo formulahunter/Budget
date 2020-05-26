@@ -19,13 +19,18 @@ let vm = new Vue({
         accept: 'application/json'
       }
     })
-    .then(res => res.json())
+    .then(res => {
+      if(res.status !== 200) {
+        throw new Error(`bad server response:\n${res.toString()}`);
+      }
+      return res.json();
+    })
     .then(instantiateSQL)
     .then(data => {
       vm.records = data;
     })
     .catch(reason => {
-      console.error(`error loading app: ${reason}`);
+      console.error(`error loading app:\n${reason.toString()}`);
     });
   }
 });
