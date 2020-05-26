@@ -70,6 +70,7 @@ module.exports = {
                 res.end(JSON.stringify(data));
             });
         }
-    }
+    },
+    runtimeCompiler: true
 }
 
