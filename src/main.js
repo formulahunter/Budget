@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import BudgetApp from './components/BudgetApp.vue';
+import {instantiateSQL} from './util/utils.js';
 
 fetch('/data', {
   method: 'GET',
@@ -8,6 +9,7 @@ fetch('/data', {
   }
 })
 .then(res => res.json())
+.then(instantiateSQL)
 .then(data => {
   new Vue({
     el: '#app',
