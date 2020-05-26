@@ -28,7 +28,18 @@
 
     export default {
         props: {
-            records: Object
+            records: {
+                type: Object,
+                default() {
+                    return {
+                        transactions: [],
+                        categories: [],
+                        accounts: [],
+                        funds: [],
+                        sources: []
+                    };
+                }
+            }
         },
         computed: {
             available() {
