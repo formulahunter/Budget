@@ -1,5 +1,5 @@
 <template>
-    <div id="#budget">
+    <div id="budget">
         <div class="summary">
             <div class="available">
                 <span>{{ available }}</span>
