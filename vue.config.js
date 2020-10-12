@@ -1,6 +1,8 @@
 const mysql = require('mysql2/promise');
 
 module.exports = {
+    outputDir: 'app/dist',
+    publicPath: '/budget/',
     devServer: {
         before: app => {
             let conn;
