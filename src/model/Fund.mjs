@@ -7,12 +7,11 @@ class Fund {
 
         this._name = null;
         this._opendate = null;
-
-        this._account = null;
-        this._balance = null;
-
         this._notes = null;
 
+        //  note that balance is a derived property
+
+        this._virtualAccounts = [];     //  va's that comprise this fund
         this._sources = [];
     }
 
@@ -22,12 +21,9 @@ class Fund {
         fund._name = record.name;
         fund._opendate = record.opendate;
 
-        fund._account = record.accountid;
+        fund._account = record._accountid;
         fund._balance = record.balance;
-
-        if(record.notes) {
-            fund._notes = record.notes;
-        }
+        fund._notes = record.notes;
 
         return fund;
     }
@@ -42,16 +38,19 @@ class Fund {
     get opendate() {
         return this._opendate;
     }
-
     get account() {
         return this._account;
     }
-    get balance() {
-        return this._balance;
+    get notes() {
+        return this._notes;
     }
 
-    get notes() {
-        return this._notes || null;
+    get balance() {
+        let balance = 0;
+        for(let va of this._virtualAccounts) {
+            balance += va.balance;
+        }
+        return balance;
     }
 
     /** check if this fund includes a given source */
