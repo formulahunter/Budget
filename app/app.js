@@ -29,48 +29,36 @@ app.get('/data', async (req, res) => {
         return;
     }
 
-    let tables = [
-        'RealAccounts',
-        'VirtualAccounts',
-        'Activities',
-        'Categories',
-        'Sources'
-    ];
-    let queries = [];
-    let results = [];
-
     //  query data from tables listed above
     //  set http status code 500 upon caught error
     //  close db connection
+    let data;
     try {
-        for(let table of tables) {
-            queries.push(conn.query(`SELECT * FROM ${table}`));
-        }
-        results = await Promise.all(queries);
-        results = results.map(res => res[0]);
+        //  initiate database queries for all types
+        //  note that accounts are procured as complete records
+        data = {
+            realAccounts: conn.query('SELECT * FROM AbstractAccounts JOIN RealAccounts USING (id)'),
+            virtualAccounts: conn.query('SELECT * FROM AbstractAccounts JOIN VirtualAccounts USING (id)'),
+            activities: conn.query('SELECT * FROM Activities'),
+            categories: conn.query('SELECT * FROM Categories'),
+            sources: conn.query('SELECT * FROM Sources'),
+        };
+
+        //  map resolved promises back to their corresponding keys on 'data'
+        const entries = Object.entries(data);
+        (await Promise.all(entries.map(ent => ent[1])))
+            .map(res => res[0])     //  conn.query() returns an array of [results, fields]
+            .forEach((res, ind) => {data[entries[ind][0]] = res});
     }
     catch(er) {
-        console.error(`error querying the database: ${er.stack}`);
+        console.error(`error querying the database: ${er.message}`);
+        console.trace();
         res.writeHead(500);
     }
     finally {
         if(conn && conn.end) {
             conn.end();
         }
-    }
-
-    let data = {};
-    for(let i = 0; i < tables.length; i++) {
-        for(let rec of results[i]) {
-            for(let key in rec) {
-                //  mark reference id's (eg source.categoryid) with an underscore
-                //  leave own id's (eg activity.id) unchanged
-                if(key.indexOf('id') > 0) {
-                    rec[key] = {'_': rec[key]};
-                }
-            }
-        }
-        data[tables[i]] = results[i];
     }
 
     res.end(JSON.stringify(data));
