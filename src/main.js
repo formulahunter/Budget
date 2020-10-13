@@ -13,7 +13,7 @@ let vm = new Vue({
   components: { BudgetApp },
   created() {
 
-    fetch('/data', {
+    fetch('/budget/data', {
       method: 'GET',
       headers: {
         accept: 'application/json'
@@ -21,7 +21,9 @@ let vm = new Vue({
     })
     .then(res => {
       if(res.status !== 200) {
-        throw new Error(`bad server response:\n${res.toString()}`);
+        console.debug(`server response status code: ${res.status}`);
+        console.debug('server response: %o', res);
+        throw new Error('bad server response');
       }
       return res.json();
     })
@@ -30,7 +32,7 @@ let vm = new Vue({
       vm.records = data;
     })
     .catch(reason => {
-      console.error(`error loading app:\n${reason.toString()}`);
+      console.error(`error loading app: ${reason}`);
     });
   }
 });
