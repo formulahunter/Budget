@@ -1,4 +1,5 @@
 import Source from './Source.mjs';
+import Reserve from './Reserve.mjs';
 
 class Fund {
 
@@ -7,11 +8,10 @@ class Fund {
 
         this._name = null;
         this._opendate = null;
+        this._closedate= null;
         this._notes = null;
 
-        //  note that balance is a derived property
-
-        this._virtualAccounts = [];     //  va's that comprise this fund
+        this._reserves = [];
         this._sources = [];
     }
 
@@ -20,10 +20,8 @@ class Fund {
 
         fund._name = record.name;
         fund._opendate = record.opendate;
-
-        fund._account = record._accountid;
-        fund._balance = record.balance;
-        fund._notes = record.notes;
+        fund._closedate = record.closedate ? new Date(record.closedate) : null;
+        fund._notes = record.notes || null;
 
         return fund;
     }
@@ -38,8 +36,8 @@ class Fund {
     get opendate() {
         return this._opendate;
     }
-    get account() {
-        return this._account;
+    get closedate() {
+        return this._closedate;
     }
     get notes() {
         return this._notes;
@@ -47,17 +45,46 @@ class Fund {
 
     get balance() {
         let balance = 0;
-        for(let va of this._virtualAccounts) {
-            balance += va.balance;
+        for(let rsv of this._reserves) {
+            balance += rsv.amount;
         }
         return balance;
+    }
+
+
+    /** check if this fund includes a given reserve */
+    hasReserve(rsv) {
+        if(!(rsv instanceof Reserve)) {
+            console.debug('%o is not a Reserve', rsv);
+        }
+        return this._reserves.includes(rsv);
+    }
+    /** add a new reserve to this fund */
+    addReserve(rsv) {
+        if(!(rsv instanceof Reserve)) {
+            console.debug('%o is not a Reserve', rsv);
+            throw new TypeError('invalid argument');
+        }
+        if(this.hasReserve(rsv)) {
+            console.debug('Reserve %o was redundantly added to Fund %o', rsv, this);
+        }
+
+        this._reserves.push(rsv);
+    }
+    /** remove a reserve from this fund */
+    removeReserve(rsv) {
+        if(!this.hasReserve(rsv)) {
+            console.debug('provided Reserve %o does not belong to this Fund %o', rsv, this);
+            throw new Error('invalid argument');
+        }
+
+        return this._reserves.splice(this._reserves.indexOf(rsv), 1)[0];
     }
 
     /** check if this fund includes a given source */
     hasSource(src) {
         return this._sources.includes(src);
     }
-
     /** add a new source to this fund */
     addSource(src) {
         if(!(src instanceof Source)) {
@@ -69,7 +96,6 @@ class Fund {
 
         this._sources.push(src);
     }
-
     /** remove a source from this fund */
     removeSrc(src) {
         if(this._sources.indexOf(src) < 0) {

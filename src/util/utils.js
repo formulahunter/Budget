@@ -1,16 +1,21 @@
+import CategoryGroup from '../model/CategoryGroup.mjs';
 import Account from '../model/Account.mjs';
-import Transaction from '../model/Transaction.mjs';
+import Activity from '../model/Activity.mjs';
 import Category from '../model/Category.mjs';
 import Fund from '../model/Fund.mjs';
+import Reserve from '../model/Reserve.mjs';
 import Source from '../model/Source.mjs';
 
 function instantiateSQL(jdat) {
 
+    //  construct data object instances from raw data
     let inst = {
         accounts: jdat.accounts.map(Account.fromSQL),
-        transactions: jdat.transactions.map(Transaction.fromSQL),
-        categories: jdat.categories.map(Category.fromSQL),
         funds: jdat.funds.map(Fund.fromSQL),
+        reserves: jdat.reserves.map(Reserve.fromSQL),
+        activities: jdat.activities.map(Activity.fromSQL),
+        categories: jdat.categories.map(Category.fromSQL),
+        categoryGroups: jdat.categoryGroups.map(CategoryGroup.fromSQL),
         sources: jdat.sources.map(Source.fromSQL)
     };
     linkReferences(inst);

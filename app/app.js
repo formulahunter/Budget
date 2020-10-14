@@ -37,11 +37,13 @@ app.get('/data', async (req, res) => {
         //  initiate database queries for all types
         //  note that accounts are procured as complete records
         data = {
-            realAccounts: conn.query('SELECT * FROM AbstractAccounts JOIN RealAccounts USING (id)'),
-            virtualAccounts: conn.query('SELECT * FROM AbstractAccounts JOIN VirtualAccounts USING (id)'),
-            activities: conn.query('SELECT * FROM Activities'),
-            categories: conn.query('SELECT * FROM Categories'),
-            sources: conn.query('SELECT * FROM Sources'),
+            accounts: conn.query('SELECT * FROM funds JOIN accounts USING (id)'),
+            funds: conn.query('SELECT * FROM funds WHERE (id) NOT IN (SELECT (id) FROM accounts)'),
+            reserves: conn.query('SELECT * FROM reserves'),
+            activities: conn.query('SELECT * FROM activities'),
+            categories: conn.query('SELECT * FROM categories'),
+            categoryGroups: conn.query('SELECT * FROM category_groups'),
+            sources: conn.query('SELECT * FROM sources'),
         };
 
         //  map resolved promises back to their corresponding keys on 'data'

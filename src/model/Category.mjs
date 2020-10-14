@@ -6,7 +6,7 @@ class Category {
         this._id = id;
 
         this._name = null;
-        this._opendate = null;
+        this._group = null;
         this._notes = null;
 
         this._sources = [];
@@ -17,10 +17,8 @@ class Category {
         let cat = new Category(record.id);
 
         cat._name = record.name;
-        cat._opendate = record.opendate;
-        if(record.notes) {
-            cat._notes = record.notes;
-        }
+        cat._group = record.groupid;
+        cat._notes = record.notes || null;
 
         return cat;
     }
@@ -32,8 +30,8 @@ class Category {
     get name() {
         return this._name;
     }
-    get opendate() {
-        return this._opendate;
+    get group() {
+        return this._group;
     }
     get notes() {
         return this._notes || null;
