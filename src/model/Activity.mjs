@@ -38,6 +38,10 @@ class Activity {
         return this._notes;
     }
 
+    get sources() {
+        return this._sources.slice();
+    }
+
     get sqlTime() {
         return this.time.toJSON().replace('T', ' ').substring(0, 23);
     }

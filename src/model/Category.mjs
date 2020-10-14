@@ -37,6 +37,10 @@ class Category {
         return this._notes || null;
     }
 
+    get sources() {
+        return this._sources.slice();
+    }
+
     /** check if this category includes a given source */
     hasSource(src) {
         return this._sources.includes(src);

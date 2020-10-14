@@ -43,6 +43,13 @@ class Fund {
         return this._notes;
     }
 
+    get reserves() {
+        return this._reserves.slice();
+    }
+    get sources() {
+        return this._sources.slice();
+    }
+
     get balance() {
         let balance = 0;
         for(let rsv of this._reserves) {

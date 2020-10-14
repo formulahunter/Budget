@@ -30,6 +30,10 @@ class CategoryGroup {
         return this._notes;
     }
 
+    get categories() {
+        return this._categories.slice();
+    }
+
 
     /** check if this group includes a given category */
     hasCategory(cat) {
