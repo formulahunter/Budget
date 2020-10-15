@@ -23,6 +23,15 @@ class Category {
         return cat;
     }
 
+    static resolveRefs(cat, records) {
+        if(typeof cat.group === 'number') {
+            cat._group = records.categoryGroups.find(grp => grp.id === cat.group);
+            if(!cat.group.hasCategory(cat)) {
+                cat.group.addCategory(cat);
+            }
+        }
+    }
+
     get id() {
         return this._id;
     }

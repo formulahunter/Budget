@@ -28,6 +28,27 @@ class Source {
         return src;
     }
 
+    static resolveRefs(src, records) {
+        if(typeof src.activity === 'number') {
+            src._activity = records.activities.find(act => act.id === src.activity);
+            if(!src.activity.hasSource(src)) {
+                src.activity.addSource(src);
+            }
+        }
+        if(typeof src.fund === 'number') {
+            src._fund = records.funds.find(fnd => fnd.id === src.fund);
+            if(!src.fund.hasSource(src)) {
+                src.fund.addSource(src);
+            }
+        }
+        if(typeof src.category === 'number') {
+            src._category = records.categories.find(cat => cat.id === src.category);
+            if(!src.category.hasSource(src)) {
+                src.category.addSource(src);
+            }
+        }
+    }
+
     get id() {
         return this._id;
     }

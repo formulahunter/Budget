@@ -8,8 +8,7 @@ import Source from '../model/Source.mjs';
 
 function instantiateSQL(jdat) {
 
-    //  construct data object instances from raw data
-    let inst = {
+    let records = {
         accounts: jdat.accounts.map(Account.fromSQL),
         funds: jdat.funds.map(Fund.fromSQL),
         reserves: jdat.reserves.map(Reserve.fromSQL),
@@ -18,51 +17,15 @@ function instantiateSQL(jdat) {
         categoryGroups: jdat.categoryGroups.map(CategoryGroup.fromSQL),
         sources: jdat.sources.map(Source.fromSQL)
     };
-    linkReferences(inst);
-    return inst;
-}
-function linkReferences(data) {
 
-    let fundRefs = [];
-    let catRefs = [];
-    for(let src of data.sources) {
-        let txn = data.transactions.find(val => val.id === src.transaction['_']);
-        src._transaction = txn;
-        txn.addSource(src);
+    //  resolve id references
+    //  this process requires refs be resolved in a specific order
+    //  use caution if reordering these calls, best leave them if possible
+    records.categories.forEach(cat => Category.resolveRefs(cat, records));
+    records.reserves.forEach(rsv => Reserve.resolveRefs(rsv, records));
+    records.sources.forEach(src => Source.resolveRefs(src, records));
 
-        let fundid = src.fund['_'];
-        let fund = fundRefs[fundid];
-        if(!fund) {
-            fund = data.funds.find(val => val.id === fundid);
-            fundRefs[fundid] = fund;
-        }
-        src._fund = fund;
-        fund.addSource(src);
-
-
-        if(src.category) {
-            let catid = src.category['_'];
-            let cat = catRefs[catid];
-            if(!cat) {
-                cat = data.categories.find(val => val.id === catid);
-                catRefs[catid] = cat;
-            }
-            src._category = cat;
-            cat.addSource(src);
-        }
-    }
-
-    let acctRefs = [];
-    for(let fund of data.funds) {
-        let acctid = fund.account['_'];
-        let acct = acctRefs[acctid];
-        if(!acct) {
-            acct = data.accounts.find(val => val.id === acctid);
-            acctRefs[acctid] = acct;
-        }
-        fund._account = acct;
-        acct.addFund(fund);
-    }
+    return records;
 }
 
 function currencyString(centsX100, sign) {
@@ -73,4 +36,4 @@ function currencyString(centsX100, sign) {
     return str;
 }
 
-export {instantiateSQL, linkReferences, currencyString};
+export {instantiateSQL, currencyString};

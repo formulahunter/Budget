@@ -24,6 +24,21 @@ class Reserve {
         return rsv;
     }
 
+    static resolveRefs(rsv, records) {
+        if(typeof rsv.account === 'number') {
+            rsv._account = records.accounts.find(acct => acct.id === rsv.account);
+            if(!rsv.account.hasReserve(rsv)) {
+                rsv.account.addReserve(rsv);
+            }
+        }
+        if(typeof rsv.fund === 'number') {
+            rsv._fund = records.funds.find(fnd => fnd.id === rsv.fund);
+            if(!rsv.fund.hasReserve(rsv)) {
+                rsv.fund.addReserve(rsv);
+            }
+        }
+    }
+
     get account() {
         return this._account;
     }
