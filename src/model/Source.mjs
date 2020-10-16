@@ -36,7 +36,7 @@ class Source {
             }
         }
         if(typeof src.fund === 'number') {
-            src._fund = records.funds.find(fnd => fnd.id === src.fund);
+            src._fund = records.accounts.find(acct => acct.id === src.fund) || records.funds.find(fnd => fnd.id === src.fund);
             if(!src.fund.hasSource(src)) {
                 src.fund.addSource(src);
             }
