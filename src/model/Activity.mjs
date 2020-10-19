@@ -65,7 +65,7 @@ class Activity {
     get grossValue() {
         let val = 0;
         for(let src of this._sources) {
-            val += src.netValue;
+            val += src.amount;
         }
         return val;
     }
