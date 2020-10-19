@@ -82,12 +82,33 @@ export default {
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+body {
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+
+  background: lightgrey;
+}
+</style>
+
+  <style scoped>
+  #budget {
+    height: 90vh;
+    width: 65vw;
+    margin-left: auto;
+    margin-right: auto;
+
+    border: 2px solid #646464;
+    border-radius: 0.5em;
+
+    background: darkgrey;
+
+    overflow-y: scroll;
+  }
+
+div.summary > div {
+  width: 20vw;
+  display: inline-block;
+  border: 2px solid grey;
 }
 </style>
