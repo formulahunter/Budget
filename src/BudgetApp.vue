@@ -2,7 +2,7 @@
     <div id="budget">
         <div class="summary">
             <div class="available">
-                <span v-if="records.activities !== undefined">{{ records ? available : '' }}</span>
+                <span>{{ available }}</span>
             </div>
             <div class="scheduled">
                 <span></span>
@@ -31,36 +31,31 @@ export default {
   data() {
     return {
       records: {
-        type: Object,
-        default() {
-          return {
-            activities: [],
-            accounts: [],
-            categories: [],
-            categoryGroups: [],
-            funds: [],
-            reserves: [],
-            sources: []
-          };
-        }
+        activities: [],
+        accounts: [],
+        categories: [],
+        categoryGroups: [],
+        funds: [],
+        reserves: [],
+        sources: []
       }
     }
   },
   computed: {
     available() {
       let sum = 0;
-      for(let txn of this.records?.activities) {
-        sum += txn.grossValue;
+      for(let act of this.records.activities) {
+        sum += act.grossValue;
       }
       return currencyString(sum, '()');
     }
   },
   created() {
     fetch('/budget/data', {
-    method: 'GET',
-      headers: {
-      accept: 'application/json'
-    }
+      method: 'GET',
+        headers: {
+        accept: 'application/json'
+      }
     })
     .then(res => {
       if(res.status !== 200) {
