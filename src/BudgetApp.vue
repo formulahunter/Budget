@@ -11,19 +11,19 @@
                 <span></span>
             </div>
         </div>
-<!--        <div class="timeline">-->
-<!--            <TransactionRecord-->
-<!--              v-for="txn of records.transactions"-->
-<!--              :txn="txn"-->
-<!--              :key="txn.id">-->
+        <div class="timeline">
+            <JournalEntry
+              v-for="actv of records.activities"
+              :actv="actv"
+              :key="actv.id">
 
-<!--            </TransactionRecord>-->
-<!--        </div>-->
+            </JournalEntry>
+        </div>
     </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import JournalEntry from './components/JournalEntry.vue'
 import { currencyString, instantiateSQL } from './util/utils.js';
 
 export default {
@@ -76,7 +76,7 @@ export default {
     });
   },
   components: {
-    HelloWorld
+    JournalEntry
   }
 }
 </script>
