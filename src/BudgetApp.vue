@@ -11,19 +11,13 @@
                 <span></span>
             </div>
         </div>
-        <div class="timeline">
-            <JournalEntry
-              v-for="actv of records.activities"
-              :actv="actv"
-              :key="actv.id">
-
-            </JournalEntry>
-        </div>
+      <ActivityTimeline :activities="records.activities"></ActivityTimeline>
     </div>
 </template>
 
 <script>
 import JournalEntry from './components/JournalEntry.vue'
+import ActivityTimeline from './components/ActivityTimeline.vue';
 import { currencyString, instantiateSQL } from './util/utils.js';
 
 export default {
@@ -53,7 +47,7 @@ export default {
   created() {
     fetch('/budget/data', {
       method: 'GET',
-        headers: {
+      headers: {
         accept: 'application/json'
       }
     })
@@ -66,14 +60,15 @@ export default {
     })
     .then(instantiateSQL)
     .then(data => {
-      this.records = data;  //  arrow function does not re-bind 'this'
+      this.records = data;
     })
     .catch(reason => {
-        console.error(`error loading app:\n${reason}`);
+      console.error(`error loading app:\n${reason}`);
     });
   },
   components: {
-    JournalEntry
+    JournalEntry,
+    ActivityTimeline
   }
 }
 </script>
