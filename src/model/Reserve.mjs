@@ -1,3 +1,5 @@
+import { dateToSQLString, sqlStringToDate } from '../util/utils.js';
+
 class Reserve {
 
     constructor(id) {
@@ -17,8 +19,8 @@ class Reserve {
         rsv._account = record.accountid;
         rsv._fund = record.fundid;
         rsv._amount = record.amount;
-        rsv._opendate = record.opendate;
-        rsv._closedate = record.closedate ? new Date(record.closedate) : null;
+        rsv._opendate = sqlStringToDate(record.opendate);
+        rsv._closedate = record.closedate ? sqlStringToDate(record.closedate) : null;
         rsv._notes = record.notes || null;
 
         return rsv;
@@ -56,6 +58,13 @@ class Reserve {
     }
     get notes() {
         return this._notes;
+    }
+
+    get sqlOpendate() {
+        return dateToSQLString(this._opendate);
+    }
+    get sqlClosedate() {
+        return this._closedate ? dateToSQLString(this._opendate) : null;
     }
 }
 

@@ -1,3 +1,4 @@
+import { dateToSQLString, sqlStringToDate } from '../util/utils.js';
 import Source from './Source.mjs';
 
 
@@ -18,7 +19,7 @@ class Activity {
         let act = new Activity(record.id);
 
         act._title = record.title;
-        act._time = new Date(record.time);
+        act._time = sqlStringToDate(record.time);
         act._notes = record.notes || null;
 
         return act;
@@ -43,23 +44,7 @@ class Activity {
     }
 
     get sqlTime() {
-        return this.time.toJSON().replace('T', ' ').substring(0, 23);
-    }
-    set sqlTime(dateStr) {
-
-        let date = new Date();
-        date.setUTCFullYear(Number(dateStr.substring(0, 4)));
-        date.setUTCMonth(Number(dateStr.substring(5, 7)) - 1);
-        date.setUTCDate(Number(dateStr.substring(8, 10)));
-        date.setUTCHours(Number(dateStr.substring(11, 13)));
-        date.setUTCMinutes(Number(dateStr.substring(14, 16)));
-        date.setUTCSeconds(Number(dateStr.substring(17, 19)));
-        date.setUTCMilliseconds(Number(dateStr.substring(20)));
-        if(Number.isNaN(date.getTime())) {
-            throw new Error(`invalid sql date ${dateStr}`);
-        }
-
-        this.time = date;
+        return dateToSQLString(this._time);
     }
 
     get grossValue() {

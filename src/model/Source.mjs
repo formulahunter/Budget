@@ -1,3 +1,5 @@
+import { dateToSQLString, sqlStringToDate } from '../util/utils.js';
+
 class Source {
 
     constructor(id) {
@@ -19,7 +21,7 @@ class Source {
 
         src._activity = record.activityid;
         src._fund = record.fundid;
-        src._time = new Date(record.time);
+        src._time = sqlStringToDate(record.time);
         src._category = record.categoryid;
 
         src._amount = record.amount;
@@ -71,6 +73,10 @@ class Source {
     }
     get notes() {
         return this._notes || null;
+    }
+
+    get sqlTime() {
+        return dateToSQLString(this._time);
     }
 }
 
