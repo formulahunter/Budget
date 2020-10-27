@@ -75,6 +75,15 @@ class Category {
 
         return this._sources.splice(this._sources.indexOf(src), 1)[0];
     }
+
+    toJSON() {
+        return {
+            id: this.id,
+            name: this.name,
+            groupid: this.group?.id,
+            notes: this.notes
+        };
+    }
 }
 
 

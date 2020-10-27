@@ -61,6 +61,14 @@ class CategoryGroup {
         }
         return this._categories.splice(this._categories.indexOf(cat), 1)[0];
     }
+
+    toJSON() {
+        return {
+            id: this.id,
+            name: this.name,
+            notes: this.notes
+        };
+    }
 }
 
 

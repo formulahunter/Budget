@@ -82,6 +82,15 @@ class Activity {
         }
         return this._sources.splice(this._sources.indexOf(src), 1)[0];
     }
+
+    toJSON() {
+        return {
+            id: this.id,
+            title: this.title,
+            time: this.sqlTime,
+            notes: this.notes
+        };
+    }
 }
 
 

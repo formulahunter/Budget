@@ -41,6 +41,10 @@ class Reserve {
         }
     }
 
+    get id() {
+        return this._id;
+    }
+
     get account() {
         return this._account;
     }
@@ -65,6 +69,18 @@ class Reserve {
     }
     get sqlClosedate() {
         return this._closedate ? dateToSQLString(this._opendate) : null;
+    }
+
+    toJSON() {
+        return {
+            id: this.id,
+            accountid: this.account.id,
+            fundid: this.fund.id,
+            amount: this.amount,
+            openDate: this.sqlOpendate,
+            closedate: this.sqlClosedate,
+            notes: this.notes
+        };
     }
 }
 

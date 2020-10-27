@@ -40,6 +40,15 @@ class Account extends Fund {
     get interestPeriod() {
         return this._interestPeriod;
     }
+
+    toJSON() {
+        return Object.assign(super.toJSON(),{
+            balance: this.balance,
+            type: this.type,
+            interestRate: this.interestRate,
+            interestPeriod: this.interestPeriod
+        });
+    }
 }
 
 

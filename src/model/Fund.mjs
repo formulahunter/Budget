@@ -119,6 +119,15 @@ class Fund {
         return this._sources.splice(this._sources.indexOf(src), 1)[0];
     }
 
+    toJSON() {
+        return {
+            id: this.id,
+            name: this.name,
+            opendate: this.sqlOpendate,
+            closedate: this.sqlClosedate,
+            notes: this.notes
+        };
+    }
 }
 
 

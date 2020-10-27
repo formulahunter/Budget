@@ -78,6 +78,18 @@ class Source {
     get sqlTime() {
         return dateToSQLString(this._time);
     }
+
+    toJSON() {
+        return {
+            id: this.id,
+            activityid: this.activity.id,
+            fundid: this.fund.id,
+            categoryid: this.category?.id,
+            time: this.sqlTime,
+            amount: this.amount,
+            notes: this.notes
+        };
+    }
 }
 
 
