@@ -29,7 +29,12 @@ function instantiateSQL(jdat) {
 }
 
 function currencyString(centsX100, sign) {
-    let str = `$${((Math.abs(centsX100) / 10000).toFixed(2))}`;
+    let str = `${((Math.abs(centsX100) / 10000).toFixed(2))}`;
+    for(let i = str.indexOf('.') - 3; i > 0; i -= 3) {
+        str = `${str.slice(0, i)},${str.slice(i)}`;
+    }
+    str = `$${str}`;
+
     if(sign && centsX100 < 0) {
         str = `${sign[0]}${str}${sign[1] ? sign[1] : ''}`;
     }

@@ -32,7 +32,7 @@ class Activity {
         return this._title;
     }
     get time() {
-        return this._opendate;
+        return this._time;
     }
     get notes() {
         return this._notes;
@@ -65,7 +65,7 @@ class Activity {
     get grossValue() {
         let val = 0;
         for(let src of this._sources) {
-            val += src.netValue;
+            val += src.amount;
         }
         return val;
     }

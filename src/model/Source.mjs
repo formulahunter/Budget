@@ -17,7 +17,7 @@ class Source {
 
         let src = new Source(record.id);
 
-        src._activity = record.transactionid;
+        src._activity = record.activityid;
         src._fund = record.fundid;
         src._time = new Date(record.time);
         src._category = record.categoryid;
