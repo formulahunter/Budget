@@ -12,12 +12,14 @@
             </div>
         </div>
       <ActivityTimeline :activities="records.activities"></ActivityTimeline>
+      <JsonUpload></JsonUpload>
     </div>
 </template>
 
 <script>
 import JournalEntry from './components/JournalEntry.vue'
 import ActivityTimeline from './components/ActivityTimeline.vue';
+import JsonUpload from './components/JsonUpload.vue';
 import { currencyString, instantiateSQL } from './util/utils.js';
 
 export default {
@@ -44,6 +46,9 @@ export default {
       return currencyString(sum, '()');
     }
   },
+  methods: {
+    importJSON() {}
+  },
   created() {
     fetch('/budget/data', {
       method: 'GET',
@@ -67,8 +72,8 @@ export default {
     });
   },
   components: {
-    JournalEntry,
-    ActivityTimeline
+    ActivityTimeline,
+    JsonUpload
   }
 }
 </script>
