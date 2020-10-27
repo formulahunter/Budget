@@ -47,7 +47,7 @@ export default {
   created() {
     fetch('/budget/data', {
       method: 'GET',
-        headers: {
+      headers: {
         accept: 'application/json'
       }
     })
@@ -60,11 +60,10 @@ export default {
     })
     .then(instantiateSQL)
     .then(data => {
-      this.records = data;  //  arrow function does not re-bind 'this'
-      // console.debug(data.activities.length);
+      this.records = data;
     })
     .catch(reason => {
-        console.error(`error loading app:\n${reason}`);
+      console.error(`error loading app:\n${reason}`);
     });
   },
   components: {
