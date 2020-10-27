@@ -6,7 +6,7 @@ class Category {
         this._id = id;
 
         this._name = null;
-        this._opendate = null;
+        this._group = null;
         this._notes = null;
 
         this._sources = [];
@@ -17,12 +17,19 @@ class Category {
         let cat = new Category(record.id);
 
         cat._name = record.name;
-        cat._opendate = record.opendate;
-        if(record.notes) {
-            cat._notes = record.notes;
-        }
+        cat._group = record.groupid;
+        cat._notes = record.notes || null;
 
         return cat;
+    }
+
+    static resolveRefs(cat, records) {
+        if(typeof cat.group === 'number') {
+            cat._group = records.categoryGroups.find(grp => grp.id === cat.group);
+            if(!cat.group.hasCategory(cat)) {
+                cat.group.addCategory(cat);
+            }
+        }
     }
 
     get id() {
@@ -32,11 +39,15 @@ class Category {
     get name() {
         return this._name;
     }
-    get opendate() {
-        return this._opendate;
+    get group() {
+        return this._group;
     }
     get notes() {
         return this._notes || null;
+    }
+
+    get sources() {
+        return this._sources.slice();
     }
 
     /** check if this category includes a given source */
