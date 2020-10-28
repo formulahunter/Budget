@@ -4,28 +4,38 @@ const mysql = require('mysql2/promise');
 
 const app = express();
 
-//  serve the budget landing page for GET requests to top-level /budget directory
-// app.get
-//  query mysql database for records
-app.get('/data', async (req, res) => {
+async function getDBConnection() {
     let conn;
     try {
-        conn = await mysql.createConnection({
+        conn = mysql.createConnection({
             host: 'localhost',
             user: 'node',
             password: '',
             database: 'budget',
             timezone: 'Z',
         });
+        return conn;
     }
     catch(er) {
         console.error(`error connecting to the database: ${er.stack}`);
-        res.writeHead(500);
-        res.end();
-
+        return 500;
+    }
+    finally {
         if(conn && conn.end) {
             conn.end();
         }
+    }
+}
+
+//  serve the budget landing page for GET requests to top-level /budget directory
+// app.get
+//  query mysql database for records
+app.get('/data', async (req, res) => {
+
+    const conn = await getDBConnection();
+    if(typeof conn === 'number') {
+        res.writeHead(conn);
+        res.end();
         return;
     }
 
