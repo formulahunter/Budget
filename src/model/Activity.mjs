@@ -19,7 +19,7 @@ class Activity {
         let act = new Activity(record.id);
 
         act._title = record.title;
-        act._time = sqlStringToDate(record.time);
+        act._time = typeof record.time === 'string' ? sqlStringToDate(record.time) : record.time;
         act._notes = record.notes || null;
 
         return act;

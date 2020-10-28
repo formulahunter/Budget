@@ -20,8 +20,8 @@ class Fund {
         let fund = new Fund(record.id);
 
         fund._name = record.name;
-        fund._opendate = sqlStringToDate(record.opendate);
-        fund._closedate = record.closedate ? sqlStringToDate(record.closedate) : null;
+        fund._opendate = typeof record.opendate === 'string' ? sqlStringToDate(record.opendate) : record.opendate;
+        fund._closedate = typeof record.closedate === 'string' ? sqlStringToDate(record.closedate) : record.closedate;
         fund._notes = record.notes || null;
 
         return fund;
@@ -63,7 +63,7 @@ class Fund {
         return dateToSQLString(this._opendate);
     }
     get sqlClosedate() {
-        return this._closedate ? dateToSQLString(this._opendate) : null;
+        return this._closedate ? dateToSQLString(this._closedate) : null;
     }
 
     /** check if this fund includes a given reserve */

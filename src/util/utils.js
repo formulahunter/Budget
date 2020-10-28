@@ -46,14 +46,23 @@ function dateToSQLString(date) {
 }
 function sqlStringToDate(str) {
     let date = new Date();
-    date.setUTCFullYear(Number(str.substring(0, 4)));
-    date.setUTCMonth(Number(str.substring(5, 7)) - 1);
-    date.setUTCDate(Number(str.substring(8, 10)));
-    date.setUTCHours(Number(str.substring(11, 13)));
-    date.setUTCMinutes(Number(str.substring(14, 16)));
-    date.setUTCSeconds(Number(str.substring(17, 19)));
-    date.setUTCMilliseconds(Number(str.substring(20)));
+    try {
+        date.setUTCFullYear(Number(str.substring(0, 4)));
+        date.setUTCMonth(Number(str.substring(5, 7)) - 1);
+        date.setUTCDate(Number(str.substring(8, 10)));
+        date.setUTCHours(Number(str.substring(11, 13)));
+        date.setUTCMinutes(Number(str.substring(14, 16)));
+        date.setUTCSeconds(Number(str.substring(17, 19)));
+        date.setUTCMilliseconds(Number(str.substring(20, 23)));
+    }
+    catch(er) {
+        console.error(er);
+        console.trace();
+        throw er;
+    }
+
     if(Number.isNaN(date.getTime())) {
+        console.debug(date);
         throw new Error(`invalid sql date ${str}`);
     }
     return date;

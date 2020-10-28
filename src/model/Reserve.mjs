@@ -19,8 +19,8 @@ class Reserve {
         rsv._account = record.accountid;
         rsv._fund = record.fundid;
         rsv._amount = record.amount;
-        rsv._opendate = sqlStringToDate(record.opendate);
-        rsv._closedate = record.closedate ? sqlStringToDate(record.closedate) : null;
+        rsv._opendate = typeof record.opendate === 'string' ? sqlStringToDate(record.opendate) : record.opendate;
+        rsv._closedate = typeof record.closedate === 'string' ? sqlStringToDate(record.closedate) : record.closedate;
         rsv._notes = record.notes || null;
 
         return rsv;
@@ -68,7 +68,7 @@ class Reserve {
         return dateToSQLString(this._opendate);
     }
     get sqlClosedate() {
-        return this._closedate ? dateToSQLString(this._opendate) : null;
+        return this._closedate ? dateToSQLString(this._closedate) : null;
     }
 
     toJSON() {
@@ -77,7 +77,7 @@ class Reserve {
             accountid: this.account.id,
             fundid: this.fund.id,
             amount: this.amount,
-            openDate: this.sqlOpendate,
+            opendate: this.sqlOpendate,
             closedate: this.sqlClosedate,
             notes: this.notes
         };

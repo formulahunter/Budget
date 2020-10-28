@@ -21,7 +21,7 @@ class Source {
 
         src._activity = record.activityid;
         src._fund = record.fundid;
-        src._time = sqlStringToDate(record.time);
+        src._time = typeof record.time === 'string' ? sqlStringToDate(record.time) : record.time;
         src._category = record.categoryid;
 
         src._amount = record.amount;
@@ -76,7 +76,7 @@ class Source {
     }
 
     get sqlTime() {
-        return dateToSQLString(this._time);
+        return this._time ? dateToSQLString(this._time) : null;
     }
 
     toJSON() {
