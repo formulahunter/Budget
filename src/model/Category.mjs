@@ -17,7 +17,7 @@ class Category {
         let cat = new Category(record.id);
 
         cat._name = record.name;
-        cat._group = record.groupid;
+        cat._group = record.group;
         cat._notes = record.notes || null;
 
         return cat;
@@ -74,6 +74,16 @@ class Category {
         }
 
         return this._sources.splice(this._sources.indexOf(src), 1)[0];
+    }
+
+    toJSON() {
+        return {
+            id: this.id,
+            name: this.name,
+            groupid: this.group?.id,
+            notes: this.notes,
+            tempId: this.tempId
+        };
     }
 }
 

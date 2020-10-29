@@ -1,3 +1,5 @@
+import { dateToSQLString, sqlStringToDate } from '../util/utils.js';
+
 class Source {
 
     constructor(id) {
@@ -17,10 +19,10 @@ class Source {
 
         let src = new Source(record.id);
 
-        src._activity = record.activityid;
-        src._fund = record.fundid;
-        src._time = new Date(record.time);
-        src._category = record.categoryid;
+        src._activity = record.activityid || record.activity;
+        src._fund = record.fundid || record.fund;
+        src._time = typeof record.time === 'string' ? sqlStringToDate(record.time) : record.time;
+        src._category = record.categoryid || record.category;
 
         src._amount = record.amount;
         src._notes = record.notes || null;
@@ -71,6 +73,23 @@ class Source {
     }
     get notes() {
         return this._notes || null;
+    }
+
+    get sqlTime() {
+        return this._time ? dateToSQLString(this._time) : null;
+    }
+
+    toJSON() {
+        return {
+            id: this.id,
+            activityid: this.activity.id,
+            fundid: this.fund.id,
+            categoryid: this.category?.id,
+            time: this.sqlTime,
+            amount: this.amount,
+            notes: this.notes,
+            tempId: this.tempId
+        };
     }
 }
 

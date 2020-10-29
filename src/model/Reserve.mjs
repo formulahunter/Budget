@@ -1,3 +1,5 @@
+import { dateToSQLString, sqlStringToDate } from '../util/utils.js';
+
 class Reserve {
 
     constructor(id) {
@@ -14,11 +16,11 @@ class Reserve {
     static fromSQL(record) {
         const rsv = new Reserve(record.id);
 
-        rsv._account = record.accountid;
-        rsv._fund = record.fundid;
+        rsv._account = record.accountid || record.account;
+        rsv._fund = record.fundid || record.fund;
         rsv._amount = record.amount;
-        rsv._opendate = record.opendate;
-        rsv._closedate = record.closedate ? new Date(record.closedate) : null;
+        rsv._opendate = typeof record.opendate === 'string' ? sqlStringToDate(record.opendate) : record.opendate;
+        rsv._closedate = typeof record.closedate === 'string' ? sqlStringToDate(record.closedate) : record.closedate;
         rsv._notes = record.notes || null;
 
         return rsv;
@@ -39,6 +41,10 @@ class Reserve {
         }
     }
 
+    get id() {
+        return this._id;
+    }
+
     get account() {
         return this._account;
     }
@@ -56,6 +62,26 @@ class Reserve {
     }
     get notes() {
         return this._notes;
+    }
+
+    get sqlOpendate() {
+        return dateToSQLString(this._opendate);
+    }
+    get sqlClosedate() {
+        return this._closedate ? dateToSQLString(this._closedate) : null;
+    }
+
+    toJSON() {
+        return {
+            id: this.id,
+            accountid: this.account.id,
+            fundid: this.fund.id,
+            amount: this.amount,
+            opendate: this.sqlOpendate,
+            closedate: this.sqlClosedate,
+            notes: this.notes,
+            tempId: this.tempId
+        };
     }
 }
 

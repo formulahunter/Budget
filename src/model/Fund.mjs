@@ -1,3 +1,4 @@
+import { dateToSQLString, sqlStringToDate } from '../util/utils.js';
 import Source from './Source.mjs';
 import Reserve from './Reserve.mjs';
 
@@ -19,8 +20,8 @@ class Fund {
         let fund = new Fund(record.id);
 
         fund._name = record.name;
-        fund._opendate = record.opendate;
-        fund._closedate = record.closedate ? new Date(record.closedate) : null;
+        fund._opendate = typeof record.opendate === 'string' ? sqlStringToDate(record.opendate) : record.opendate;
+        fund._closedate = typeof record.closedate === 'string' ? sqlStringToDate(record.closedate) : record.closedate;
         fund._notes = record.notes || null;
 
         return fund;
@@ -58,6 +59,12 @@ class Fund {
         return balance;
     }
 
+    get sqlOpendate() {
+        return dateToSQLString(this._opendate);
+    }
+    get sqlClosedate() {
+        return this._closedate ? dateToSQLString(this._closedate) : null;
+    }
 
     /** check if this fund includes a given reserve */
     hasReserve(rsv) {
@@ -112,6 +119,16 @@ class Fund {
         return this._sources.splice(this._sources.indexOf(src), 1)[0];
     }
 
+    toJSON() {
+        return {
+            id: this.id,
+            name: this.name,
+            opendate: this.sqlOpendate,
+            closedate: this.sqlClosedate,
+            notes: this.notes,
+            tempId: this.tempId
+        };
+    }
 }
 
 
