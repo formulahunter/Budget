@@ -125,7 +125,8 @@ class Fund {
             name: this.name,
             opendate: this.sqlOpendate,
             closedate: this.sqlClosedate,
-            notes: this.notes
+            notes: this.notes,
+            tempId: this.tempId
         };
     }
 }

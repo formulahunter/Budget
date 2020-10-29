@@ -88,7 +88,8 @@ class Activity {
             id: this.id,
             title: this.title,
             time: this.sqlTime,
-            notes: this.notes
+            notes: this.notes,
+            tempId: this.tempId
         };
     }
 }

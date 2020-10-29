@@ -19,10 +19,10 @@ class Source {
 
         let src = new Source(record.id);
 
-        src._activity = record.activityid;
-        src._fund = record.fundid;
+        src._activity = record.activityid || record.activity;
+        src._fund = record.fundid || record.fund;
         src._time = typeof record.time === 'string' ? sqlStringToDate(record.time) : record.time;
-        src._category = record.categoryid;
+        src._category = record.categoryid || record.category;
 
         src._amount = record.amount;
         src._notes = record.notes || null;
@@ -87,7 +87,8 @@ class Source {
             categoryid: this.category?.id,
             time: this.sqlTime,
             amount: this.amount,
-            notes: this.notes
+            notes: this.notes,
+            tempId: this.tempId
         };
     }
 }

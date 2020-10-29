@@ -16,8 +16,8 @@ class Reserve {
     static fromSQL(record) {
         const rsv = new Reserve(record.id);
 
-        rsv._account = record.accountid;
-        rsv._fund = record.fundid;
+        rsv._account = record.accountid || record.account;
+        rsv._fund = record.fundid || record.fund;
         rsv._amount = record.amount;
         rsv._opendate = typeof record.opendate === 'string' ? sqlStringToDate(record.opendate) : record.opendate;
         rsv._closedate = typeof record.closedate === 'string' ? sqlStringToDate(record.closedate) : record.closedate;
@@ -79,7 +79,8 @@ class Reserve {
             amount: this.amount,
             opendate: this.sqlOpendate,
             closedate: this.sqlClosedate,
-            notes: this.notes
+            notes: this.notes,
+            tempId: this.tempId
         };
     }
 }

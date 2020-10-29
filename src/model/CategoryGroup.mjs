@@ -66,7 +66,8 @@ class CategoryGroup {
         return {
             id: this.id,
             name: this.name,
-            notes: this.notes
+            notes: this.notes,
+            tempId: this.tempId
         };
     }
 }
