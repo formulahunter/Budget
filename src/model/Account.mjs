@@ -13,19 +13,16 @@ class Account extends Fund {
 
     static fromSQL(record) {
 
-        let acct = new Account(record.id);
-
-        acct._name = record.name;
-        acct._opendate = new Date(record.opendate);
-        acct._closedate = record.closedate ? new Date(record.closedate) : null;
-        acct._notes = record.notes || null;
-
-        acct._balance = Number(record.balance);
-        acct._type = record.type;
-        acct._interestRate = Number(record.interest_rate);
-        acct._interestPeriod = Number(record.interest_period);
-
-        return acct;
+        return Object.assign(
+            new Account(record.id),
+            super.fromSQL(record),
+            {
+                _balance: Number(record.balance),
+                _type: record.type,
+                _interestRate: Number(record.interest_rate),
+                _interestPeriod: Number(record.interest_period)
+            }
+        );
     }
 
     get balance() {
