@@ -257,6 +257,16 @@ export default {
         }
       }
 
+      //  set fund, reserve open dates to date of earliest associated activity
+      for(let fund of Object.values(newRecords.funds)) {
+        fund._opendate = fund.sources
+          .map(src => src.activity.time)
+          .reduce((prev, curr) => prev < curr ? prev : curr, new Date());
+      }
+      for(let reserve of newRecords.reserves) {
+        reserve._opendate = reserve.fund.opendate;
+      }
+
       //  save new records to database
       //    1. accounts, funds, category groups, activities
       //    2. categories, reserves
