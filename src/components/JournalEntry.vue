@@ -2,7 +2,6 @@
     <div class="journal-entry">
         <div class="title">
             <h3><span>{{ actv.title }}</span></h3>
-            <span class="date">{{ dateStringShort }}</span>
         </div>
         <div class="sources">
             <div class="source" v-for="src of actv.sources" :key="src.id">
